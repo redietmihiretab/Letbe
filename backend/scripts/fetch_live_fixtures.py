@@ -3,7 +3,10 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-from backend.database import get_supabase
+try:
+    from backend.database import get_supabase
+except ModuleNotFoundError:
+    from database import get_supabase
 
 _ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
 load_dotenv(dotenv_path=_ENV_PATH, override=False)

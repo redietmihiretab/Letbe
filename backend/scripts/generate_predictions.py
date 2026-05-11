@@ -4,8 +4,12 @@ import xgboost as xgb
 from dotenv import load_dotenv
 from pathlib import Path
 
-from backend.database import get_supabase
-from backend.services.ai_service import generate_match_analysis
+try:
+    from backend.database import get_supabase
+    from backend.services.ai_service import generate_match_analysis
+except ModuleNotFoundError:
+    from database import get_supabase
+    from services.ai_service import generate_match_analysis
 
 _ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
 load_dotenv(dotenv_path=_ENV_PATH, override=False)

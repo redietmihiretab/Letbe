@@ -18,7 +18,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from backend.database import get_supabase
+try:
+    # When running from repo root: `uvicorn backend.main:app`
+    from backend.database import get_supabase
+except ModuleNotFoundError:
+    # When Render "Root Directory" is `backend`: `uvicorn main:app`
+    from database import get_supabase
 
 @app.get("/")
 async def root():
