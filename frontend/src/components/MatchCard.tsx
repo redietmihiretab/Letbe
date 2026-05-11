@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 interface MatchCardProps {
+  matchId: string | number;
   homeTeam: string;
   awayTeam: string;
   homeLogo?: string;
@@ -17,6 +18,7 @@ interface MatchCardProps {
 }
 
 const MatchCard: React.FC<MatchCardProps> = ({
+  matchId,
   homeTeam,
   awayTeam,
   homeLogo,
@@ -84,7 +86,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
             <span className="text-sm font-black text-emerald-400">{prediction.toUpperCase()}</span>
           </div>
           <Link 
-            href={`/analysis/1`} 
+            href={`/analysis/${matchId}`} 
             className="w-full py-2 bg-white/5 hover:bg-white/10 rounded-xl text-center text-xs font-bold transition-colors border border-white/5"
           >
             VIEW DETAILED ANALYSIS

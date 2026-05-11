@@ -5,6 +5,12 @@ import MatchCard from '@/components/MatchCard';
 export default function Home() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredMatches = matches.filter((pred: any) => 
+    pred.matches.home_team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    pred.matches.away_team.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     async function fetchPredictions() {
@@ -39,10 +45,27 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="relative flex place-items-center mb-16">
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 text-center">
+      <div className="flex flex-col items-center mb-16">
+        <div className="glass px-4 py-2 rounded-full mb-6 border border-white/10">
+          <span className="text-[10px] font-black tracking-[0.2em] text-emerald-400 uppercase">LETBE AI v1.0.0-beta</span>
+        </div>
+        <h1 className="text-7xl md:text-9xl font-black tracking-tighter text-center leading-[0.8] mb-12">
           BEAT THE<br />ODDS.
         </h1>
+        
+        {/* Search Bar */}
+        <div className="w-full max-w-xl relative">
+          <input 
+            type="text" 
+            placeholder="SEARCH TEAM OR LEAGUE..." 
+            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold tracking-widest focus:outline-none focus:border-emerald-500/50 transition-colors uppercase placeholder:text-slate-600"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-500 font-black text-xs">
+            {filteredMatches.length} RESULTS
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
@@ -50,10 +73,11 @@ export default function Home() {
           <div className="col-span-full text-center py-12">
             <span className="text-slate-500 font-bold animate-pulse">ANALYZING UPCOMING FIXTURES...</span>
           </div>
-        ) : matches.length > 0 ? (
-          matches.map((pred: any) => (
+        ) : filteredMatches.length > 0 ? (
+          filteredMatches.map((pred: any) => (
             <MatchCard 
               key={pred.id} 
+              matchId={pred.match_id}
               homeTeam={pred.matches.home_team.name}
               awayTeam={pred.matches.away_team.name}
               homeLogo={pred.matches.home_team.logo_url}
