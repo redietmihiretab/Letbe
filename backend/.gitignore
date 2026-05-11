@@ -7,10 +7,11 @@ venv/
 ENV/
 env/
 .env
+.env.*
 
 # Data
-backend/data/*.csv
-backend/models/*.json
+data/*.csv
+models/*.json
 
 # Logs
 *.log

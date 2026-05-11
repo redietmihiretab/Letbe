@@ -25,13 +25,33 @@ Letbe is a premium, AI-powered football prediction web application. It uses mach
 ### Backend
 1. Create a virtual environment: `python -m venv venv`
 2. Install dependencies: `pip install -r backend/requirements.txt`
-3. Configure `.env` with your Supabase, RapidAPI, and Gemini keys.
-4. Run the API: `python backend/main.py`
+3. Create `backend/.env` from `backend/.env.example` (local dev only).
+4. Run the API:
+   - Dev: `uvicorn backend.main:app --reload --port 8000`
+   - Or: `python -m backend.main`
 
 ### Frontend
-1. Install dependencies: `npm install`
-2. Configure `.env.local` with your Supabase public keys.
-3. Run the dev server: `npm run dev`
+1. Install dependencies: `cd frontend && npm install`
+2. (Optional local dev) Create `frontend/.env.local` and set:
+   - `NEXT_PUBLIC_BACKEND_URL=http://localhost:8000`
+3. Run the dev server: `cd frontend && npm run dev`
+
+## 🚀 Deployment (no local hosting)
+
+### Backend on Render
+- This repo includes a Render Blueprint at `render.yaml`.
+- Create a new Render **Web Service** from this repo (or “Blueprint”) and set env vars:
+  - `SUPABASE_URL`
+  - `SUPABASE_KEY`
+  - `RAPID_API_KEY` (optional, if you run live fixtures sync)
+  - `GEMINI_API_KEY` (optional, enables AI analysis)
+
+### Frontend on Vercel
+- Import the repo in Vercel.
+- Set **Root Directory** to `frontend`.
+- Add environment variable:
+  - `NEXT_PUBLIC_BACKEND_URL` = your Render backend URL (example: `https://<service>.onrender.com`)
+- Deploy.
 
 ---
 *Disclaimer: Letbe is for educational and entertainment purposes only. We do not provide financial or gambling advice.*

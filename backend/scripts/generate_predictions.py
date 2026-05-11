@@ -1,16 +1,14 @@
 import os
-import sys
 import pandas as pd
 import xgboost as xgb
 from dotenv import load_dotenv
+from pathlib import Path
 
-# Add parent directory to path to import database
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from database import get_supabase
+from backend.database import get_supabase
+from backend.services.ai_service import generate_match_analysis
 
-load_dotenv()
-
-from services.ai_service import generate_match_analysis
+_ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
+load_dotenv(dotenv_path=_ENV_PATH, override=False)
 
 def generate_predictions_for_upcoming():
     supabase = get_supabase()

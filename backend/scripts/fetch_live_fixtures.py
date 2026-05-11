@@ -1,13 +1,12 @@
 import requests
 import os
-import sys
 from dotenv import load_dotenv
+from pathlib import Path
 
-# Add parent directory to path to import database
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from database import get_supabase
+from backend.database import get_supabase
 
-load_dotenv()
+_ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
+load_dotenv(dotenv_path=_ENV_PATH, override=False)
 
 RAPID_API_KEY = os.environ.get("RAPID_API_KEY")
 API_HOST = "api-football-v1.p.rapidapi.com"
