@@ -20,6 +20,10 @@ from database import get_supabase
 
 supabase = get_supabase()
 
+@app.get("/")
+async def root():
+    return {"message": "Letbe AI Backend is LIVE", "status": "healthy"}
+
 @app.get("/api/v1/predictions")
 async def get_all_predictions():
     # Fetch predictions joined with match and team data

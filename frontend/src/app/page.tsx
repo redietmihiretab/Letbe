@@ -9,7 +9,8 @@ export default function Home() {
   useEffect(() => {
     async function fetchPredictions() {
       try {
-        const res = await fetch('http://localhost:8000/api/v1/predictions');
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+        const res = await fetch(`${backendUrl}/api/v1/predictions`);
         const json = await res.json();
         setMatches(json.data || []);
       } catch (err) {
