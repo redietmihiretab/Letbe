@@ -1,0 +1,35 @@
+name: Daily Prediction Updates
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-predictions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r backend/requirements.txt
+
+      - name: Run Data & AI Pipeline
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          RAPID_API_KEY: ${{ secrets.RAPID_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          # 1. Fetch live fixtures from API-Football
+          python backend/scripts/fetch_live_fixtures.py
+          
+          # 2. Generate predictions and Gemini AI insights
+          python backend/scripts/generate_predictions.py
